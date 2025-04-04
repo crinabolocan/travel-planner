@@ -1,34 +1,48 @@
-version: '3.9'
+﻿version: '3.9'
 
 services:
+  # 🔐 AuthService - doar autentificare + JWT
   authservice:
     build: ./AuthService
     ports:
       - "5001:8080"
     depends_on:
-      - db
+      - userdataservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - app_net
 
-  db:
+  # 👤 UserDataService - gestionează datele utilizatorilor (DB + API)
+  userdataservice:
+    build: ./UserDataService
+    ports:
+      - "5002:8080"
+    depends_on:
+      - db-users
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app_net
+
+  # 🗃️ Baza de date pentru UserDataService
+  db-users:
     image: postgres:15
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: authdb
+      POSTGRES_DB: usersdb
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - users_pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - app_net
+
 
 
 networks:
   app_net:
 
 volumes:
-    pgdata:
-    
+  users_pgdata:

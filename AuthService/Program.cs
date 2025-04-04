@@ -1,5 +1,4 @@
-﻿using AuthService.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -11,8 +10,8 @@ var jwtKey = "this_is_a_super_secret_key_123456789!"; // pune în secrets/env ma
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AuthDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<AuthDbContext>(opt =>
+//    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -43,6 +42,4 @@ app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
-DbInitializer.Initialize(app); // se rulează după build
 app.Run();

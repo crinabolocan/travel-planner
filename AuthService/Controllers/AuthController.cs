@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AuthService.Models;
-using AuthService.Data;
+
 
 namespace AuthService.Controllers;
 
@@ -13,27 +12,34 @@ namespace AuthService.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthDbContext _context;
     private readonly IConfiguration _config;
 
-    public AuthController(AuthDbContext context, IConfiguration config)
+    public AuthController(IConfiguration config)
     {
-        _context = context;
         _config = config;
     }
+
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserDto request)
     {
-        var userExists = await _context.Users.AnyAsync(u => u.Username == request.Username);
-        if (userExists)
+        var httpClient = new HttpClient();
+
+        // 🛡️ Verificare dacă userul deja există
+        var checkResponse = await httpClient.GetAsync($"http://userdataservice:8080/user/{request.Username}");
+        if (checkResponse.IsSuccessStatusCode)
             return BadRequest("User already exists");
 
+        // 🔒 Creare utilizator
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-        var user = new User { Username = request.Username, PasswordHash = passwordHash };
+        var createUserResponse = await httpClient.PostAsJsonAsync("http://userdataservice:8080/user/create", new
+        {
+            Username = request.Username,
+            Password = passwordHash
+        });
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        if (!createUserResponse.IsSuccessStatusCode)
+            return StatusCode(500, "Failed to create user");
 
         return Ok("User created");
     }
@@ -41,13 +47,21 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto request)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+        var client = new HttpClient();
+        var response = await client.GetAsync($"http://userdataservice:8080/user/{request.Username}");
+
+        if (!response.IsSuccessStatusCode)
+            return Unauthorized("Invalid credentials");
+
+        var user = await response.Content.ReadFromJsonAsync<User>();
+
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             return Unauthorized("Invalid credentials");
 
         var token = CreateToken(user);
         return Ok(new { token });
     }
+
 
     private string CreateToken(User user)
     {
