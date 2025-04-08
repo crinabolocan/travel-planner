@@ -39,6 +39,30 @@ services:
     networks:
       - app_net
 
+  tripplannerservice:
+    build: ./TripPlannerService
+    ports:
+      - "5003:8080"
+    depends_on:
+      - db-trip
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app_net
+
+  db-trip:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tripdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - trip_pgdata:/var/lib/postgresql/data
+    networks:
+      - app_net
+
 
 
 networks:
@@ -46,3 +70,5 @@ networks:
 
 volumes:
   users_pgdata:
+  trip_pgdata:
+
