@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TripPlannerService.Data;
 using TripPlannerService.DTOs;
 using TripPlannerService.Models;
+using TripPlannerService.Services;
 
 namespace TripPlannerService.Controllers;
 
@@ -13,10 +14,12 @@ namespace TripPlannerService.Controllers;
 public class TripController : ControllerBase
 {
     private readonly TripDbContext _context;
+    private readonly IEmailService _emailService;
 
-    public TripController(TripDbContext context)
+    public TripController(TripDbContext context, IEmailService emailService)
     {
         _context = context;
+        _emailService = emailService;
     }
 
     [HttpPost("create")]
@@ -25,11 +28,11 @@ public class TripController : ControllerBase
         if (tripDto.StartDate >= tripDto.EndDate)
             return BadRequest("StartDate must be earlier than EndDate");
 
-        if (string.IsNullOrWhiteSpace(tripDto.Destination))
-            return BadRequest("Destination is required");
+        if (tripDto.DestinationId <= 0)
+            return BadRequest("DestinationId is required");
 
-        if (string.IsNullOrWhiteSpace(tripDto.Transport))
-            return BadRequest("Transport is required");
+        if (tripDto.TransportOptionId <= 0)
+            return BadRequest("Transport option is required");
 
         var username = User.Identity?.Name;
         if (username == null)
@@ -38,15 +41,16 @@ public class TripController : ControllerBase
         var trip = new Trip
         {
             Username = username,
-            Destination = tripDto.Destination,
+            DestinationId = tripDto.DestinationId,
             StartDate = tripDto.StartDate.ToUniversalTime(),
             EndDate = tripDto.EndDate.ToUniversalTime(),
-            Transport = tripDto.Transport,
+            TransportOptionId = tripDto.TransportOptionId,
             Activities = tripDto.Activities ?? new List<string>()
         };
 
         _context.Trips.Add(trip);
         await _context.SaveChangesAsync();
+        await _emailService.SendTripCreatedEmail(username, tripDto.DestinationId.ToString(), trip.StartDate);
 
         return Ok(new { message = "Trip created" });
     }
@@ -60,10 +64,14 @@ public class TripController : ControllerBase
 
         var trips = await _context.Trips
             .Where(t => t.Username == username)
+            .Include(t => t.Destination)
+            .Include(t => t.Reviews)
+            .Include(t => t.TransportOption)
             .ToListAsync();
 
         return Ok(trips);
     }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTrip(int id)

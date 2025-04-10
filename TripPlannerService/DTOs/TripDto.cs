@@ -2,9 +2,9 @@ namespace TripPlannerService.DTOs;
 
 public class TripDto
 {
-    public string Destination { get; set; } = string.Empty;
+    public int DestinationId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public string Transport { get; set; } = string.Empty;
+    public int TransportOptionId { get; set; }
     public List<string> Activities { get; set; } = new();
 }
