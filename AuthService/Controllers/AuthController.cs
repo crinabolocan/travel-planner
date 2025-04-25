@@ -25,12 +25,10 @@ public class AuthController : ControllerBase
     {
         var httpClient = new HttpClient();
 
-        // 🛡️ Verificare dacă userul deja există
         var checkResponse = await httpClient.GetAsync($"http://userdataservice:8080/user/{request.Username}");
         if (checkResponse.IsSuccessStatusCode)
             return BadRequest("User already exists");
 
-        // 🔒 Creare utilizator
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
         var createUserResponse = await httpClient.PostAsJsonAsync("http://userdataservice:8080/user/create", new
         {

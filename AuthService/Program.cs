@@ -5,8 +5,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔐 JWT Key (temporar hardcodata)
-var jwtKey = "this_is_a_super_secret_key_123456789!"; // pune în secrets/env mai târziu
+var jwtKey = "this_is_a_super_secret_key_123456789!";
 
 builder.Services.AddControllers();
 

@@ -16,7 +16,6 @@ public class TripDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Convertire pentru lista de activități
         var converter = new ValueConverter<List<string>, string>(
             v => string.Join(",", v),
             v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()

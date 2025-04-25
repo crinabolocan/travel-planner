@@ -9,9 +9,9 @@ public static class DbInitializer
     {
         using var scope = app.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<TripDbContext>();
-        db.Database.Migrate(); // Aplică migrațiile
+        db.Database.Migrate(); // Aplica migratiile
 
-        SeedTransportOptions(db); // Apelăm seed
+        SeedTransportOptions(db);
     }
 
     private static void SeedTransportOptions(TripDbContext db)

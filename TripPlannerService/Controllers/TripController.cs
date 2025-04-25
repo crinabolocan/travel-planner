@@ -33,7 +33,7 @@ public class TripController : ControllerBase
 
         if (tripDto.TransportOptionId <= 0)
             return BadRequest("Transport option is required");
-
+        // fluent validator
         var username = User.Identity?.Name;
         if (username == null)
             return Unauthorized();

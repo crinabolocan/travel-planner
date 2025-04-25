@@ -76,7 +76,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 
-// optional: DbInitializer.ApplyMigration(app); dacã vrei migrare automatã
 DbInitializer.ApplyMigration(app);
 
 app.Run();

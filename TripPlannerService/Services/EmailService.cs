@@ -18,11 +18,11 @@ public class EmailService : IEmailService
         var email = new MimeMessage();
         email.From.Add(MailboxAddress.Parse("noreply@travelplanner.com"));
         email.To.Add(MailboxAddress.Parse(toEmail));
-        email.Subject = "Noua ta cãlãtorie a fost creatã!";
+        email.Subject = "Noua ta calatorie a fost creata!";
 
         email.Body = new TextPart("plain")
         {
-            Text = $"Salut! Ai creat o cãlãtorie cãtre {destination}, care începe pe {startDate:dd.MM.yyyy}."
+            Text = $"Salut! Ai creat o calatorie catre {destination}, care incepe pe {startDate:dd.MM.yyyy}."
         };
 
         using var smtp = new SmtpClient();
