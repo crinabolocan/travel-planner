@@ -1,0 +1,331 @@
+/* Fundal full-screen */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #ddD;
+    background-size: cover;
+    background-position: center;
+    font-family: "Montserrat", sans-serif;
+}
+
+/* Header - Titlul aplicației */
+.app-header {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    top: 5%;
+}
+
+.form {
+    width: 100%;
+}
+
+/* Caseta de login centrată */
+.login-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    top: 10%;
+    width: 70%;
+    height: 70%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(3px);
+    /* border-radius: 15px; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* background: url('../../public/images/travel1.jpg'); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Partea stângă (Login) */
+.login-left {
+    flex: 1;
+    padding: 50px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border-right: #1e1c1d 0.25px solid;
+}
+
+.login-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.login-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Input-uri */
+.input-group {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    position: relative;
+
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+    position: relative;
+}
+
+.input-group input:focus {
+    border-color: #533824;
+    box-shadow: 0px 0px 8px rgba(67, 100, 247, 0.5);
+    outline: none;
+}
+
+/* Opțiuni login */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.forgot-password {
+    color: #533824;
+    text-decoration: none;
+    position: relative;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Buton Login */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background: #533824;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    position: relative;
+}
+
+.login-button:hover {
+    background: #cbae9b;
+}
+
+/* Text pentru autentificare socială */
+.social-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+    position: relative;
+}
+
+/* Pictograme social media */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.social-icons a {
+    font-size: 20px;
+    color: #533824;
+    text-decoration: none;
+    transition: 0.3s;
+    position: relative;
+}
+
+.social-icons a:hover {
+    color: #cbae9b;
+}
+
+/* Partea dreaptă (Promo Register) */
+.login-right {
+    flex: 1;
+    color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.register_container {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    padding: 20px;
+}
+
+
+/* Stil pentru partea de înregistrare */
+.login-right h2 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.login-right p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Buton Register */
+.register-button {
+    padding: 12px 30px;
+    border: 2px solid rgb(0, 0, 0);
+    background: transparent;
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+
+}
+
+.register-button:hover {
+    background: rgb(36, 35, 35);
+    color: #cbae9b;
+}
+
+/* Asigură că input-urile și butonul nu depășesc containerul */
+.input-group input,
+.login-button {
+    max-width: 100%;
+    width: calc(100% - 20px);
+    /* Asigură spațiu la margini */
+    box-sizing: border-box;
+    /* Se asigură că padding-ul nu depășește dimensiunea */
+}
+
+/* Ajustează padding-ul pentru o mai bună proporționare */
+.input-group {
+    width: 100%;
+    padding: 0 10px;
+}
+
+/* Fix pentru buton */
+.login-button {
+    width: calc(100% - 20px);
+    /* Evită depășirea marginilor */
+    padding: 12px;
+    margin: 10px 10px;
+    /* Evită să atingă marginile containerului */
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-group input {
+    /* width: 100%; */
+    padding-right: 50px;
+    /* pentru icon */
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 50px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+
+@media screen and (max-width: 900px),
+(max-height: 600px) {
+    .login-box {
+        flex-direction: column;
+        height: auto;
+        width: 90%;
+        border-radius: 12px;
+        border: none;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-left {
+        padding: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .login-right {
+        display: none;
+        /* Ascunde partea dreaptă */
+    }
+
+    .input-group input,
+    .login-button {
+        max-width: 100%;
+        width: calc(100% - 60px);
+        /* Asigură spațiu la margini */
+        box-sizing: border-box;
+        /* Se asigură că padding-ul nu depășește dimensiunea */
+    }
+
+    /* Ajustează padding-ul pentru o mai bună proporționare */
+    .input-group {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* Fix pentru buton */
+    .login-button {
+        width: calc(100% - 100px);
+        /* Evită depășirea marginilor */
+        padding: 12px;
+        margin: 10px 10px;
+        align-self: center;
+    }
+
+    .login-options {
+        width: calc(100% - 100px);
+        /* Evită depășirea marginilor */
+        padding: 12px;
+        margin: 10px 10px;
+        align-self: center;
+    }
+}

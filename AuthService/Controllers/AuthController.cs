@@ -25,12 +25,17 @@ public class AuthController : ControllerBase
     {
         var httpClient = new HttpClient();
 
-        var checkResponse = await httpClient.GetAsync($"http://userdataservice:8080/user/{request.Username}");
+        // Decide adresa corectă în funcție de mediu
+        var baseUrl = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"
+            ? "http://userdataservice:8080"
+            : "http://localhost:5002";
+
+        var checkResponse = await httpClient.GetAsync($"{baseUrl}/user/{request.Username}");
         if (checkResponse.IsSuccessStatusCode)
             return BadRequest("User already exists");
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-        var createUserResponse = await httpClient.PostAsJsonAsync("http://userdataservice:8080/user/create", new
+        var createUserResponse = await httpClient.PostAsJsonAsync($"{baseUrl}/user/create", new
         {
             Username = request.Username,
             Password = passwordHash
@@ -45,8 +50,14 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto request)
     {
-        var client = new HttpClient();
-        var response = await client.GetAsync($"http://userdataservice:8080/user/{request.Username}");
+        var httpClient = new HttpClient();
+
+        // Decide adresa corectă în funcție de mediu
+        var baseUrl = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"
+            ? "http://userdataservice:8080"
+            : "http://localhost:5002";
+
+        var response = await httpClient.GetAsync($"{baseUrl}/user/{request.Username}");
 
         if (!response.IsSuccessStatusCode)
             return Unauthorized("Invalid credentials");
