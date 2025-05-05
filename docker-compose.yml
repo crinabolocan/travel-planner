@@ -1,7 +1,22 @@
 ﻿version: '3.9'
 
 services:
-  # AuthService - doar autentificare + JWT
+  # Traefik - gateway HTTP public
+  traefik:
+    image: traefik:v2.10
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"         # HTTP entrypoint
+      - "8080:8080"     # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - app_net
+
+  # AuthService - autentificare + JWT
   authservice:
     build: ./AuthService
     ports:
@@ -10,10 +25,14 @@ services:
       - userdataservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth.rule=PathPrefix(`/auth`)"
+      - "traefik.http.services.auth.loadbalancer.server.port=8080"
     networks:
       - app_net
 
-  # UserDataService - gestionează datele utilizatorilor (DB + API)
+  # UserDataService - date utilizatori (DB + API)
   userdataservice:
     build: ./UserDataService
     ports:
@@ -22,10 +41,14 @@ services:
       - db-users
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.userdata.rule=PathPrefix(`/user`)"
+      - "traefik.http.services.userdata.loadbalancer.server.port=8080"
     networks:
       - app_net
 
-  # Baza de date pentru UserDataService
+  # DB pentru UserDataService
   db-users:
     image: postgres:15
     environment:
@@ -39,6 +62,7 @@ services:
     networks:
       - app_net
 
+  # TripPlannerService - planificare călătorii
   tripplannerservice:
     build: ./TripPlannerService
     ports:
@@ -47,9 +71,14 @@ services:
       - db-trip
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.trip.rule=PathPrefix(`/trip`)"
+      - "traefik.http.services.trip.loadbalancer.server.port=8080"
     networks:
       - app_net
 
+  # DB pentru TripPlannerService
   db-trip:
     image: postgres:15
     environment:
@@ -63,7 +92,14 @@ services:
     networks:
       - app_net
 
-
+  # Adminer - UI pentru baze de date
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8085:8080"
+    networks:
+      - app_net
 
 networks:
   app_net:
@@ -71,4 +107,3 @@ networks:
 volumes:
   users_pgdata:
   trip_pgdata:
-
