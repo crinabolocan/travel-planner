@@ -1,6 +1,8 @@
 using UserDataService.Data;
 using Microsoft.EntityFrameworkCore;
 using UserDataService;
+using Prometheus;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,10 @@ var app = builder.Build();
 
 app.UseAuthorization();
 app.MapControllers();
+
+app.UseMetricServer();
+app.UseHttpMetrics();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 

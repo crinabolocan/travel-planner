@@ -19,6 +19,7 @@ services:
   # AuthService - autentificare + JWT
   authservice:
     build: ./AuthService
+    image: authservice:latest
     ports:
       - "5001:8080"
     depends_on:
@@ -34,7 +35,7 @@ services:
 
   # UserDataService - date utilizatori (DB + API)
   userdataservice:
-    build: ./UserDataService
+    image: userdataservice:latest
     ports:
       - "5002:8080"
     depends_on:
@@ -64,7 +65,7 @@ services:
 
   # TripPlannerService - planificare călătorii
   tripplannerservice:
-    build: ./TripPlannerService
+    image: tripplannerservice:latest
     ports:
       - "5003:8080"
     depends_on:
@@ -100,6 +101,23 @@ services:
       - "8085:8080"
     networks:
       - app_net
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - app_net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - app_net
+
 
 networks:
   app_net:

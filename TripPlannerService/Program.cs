@@ -4,6 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TripPlannerService.Data;
 using TripPlannerService.Services;
+using Prometheus;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
@@ -70,8 +72,13 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseMetricServer();       // expune /metrics
+app.UseHttpMetrics();        // colectează metrice HTTP (rute, coduri răspuns etc.)
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
