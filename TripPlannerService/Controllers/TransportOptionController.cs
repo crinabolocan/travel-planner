@@ -39,4 +39,34 @@ public class TransportOptionController : ControllerBase
         var options = await _context.TransportOptions.ToListAsync();
         return Ok(options);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var option = await _context.TransportOptions.FindAsync(id);
+        if (option == null)
+            return NotFound("Transport option not found.");
+
+        _context.TransportOptions.Remove(option);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Transport option deleted." });
+    }
+
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] TransportOptionDto dto)
+    {
+        var option = await _context.TransportOptions.FindAsync(id);
+        if (option == null)
+            return NotFound("Transport option not found.");
+
+        option.Type = dto.Type;
+        option.Company = dto.Company;
+        option.Price = dto.Price;
+
+        await _context.SaveChangesAsync();
+        return Ok(option);
+    }
+
 }

@@ -1,0 +1,81 @@
+.create-trip-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #f7f9fb;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+}
+
+.create-trip-page h2,
+.new-destination-section h3 {
+    text-align: center;
+    color: #0c4a60;
+    margin-bottom: 1.5rem;
+}
+
+.create-trip-form,
+.add-destination-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.create-trip-form label,
+.add-destination-form label {
+    font-weight: 600;
+    color: #333;
+}
+
+.create-trip-form input,
+.create-trip-form select,
+.add-destination-form input,
+.add-destination-form select,
+.add-destination-form textarea {
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.create-trip-form input:focus,
+.create-trip-form select:focus,
+.add-destination-form input:focus,
+.add-destination-form textarea:focus {
+    border-color: #0c4a60;
+    outline: none;
+}
+
+.create-trip-form button,
+.add-destination-form button {
+    background-color: #0c4a60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-trip-form button:hover,
+.add-destination-form button:hover {
+    background-color: #083949;
+}
+
+.new-destination-section {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 2px dashed #ccc;
+}
+
+.trip-message {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: bold;
+    color: #2e7d32;
+}

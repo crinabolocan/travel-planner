@@ -13,6 +13,7 @@ public class TripDbContext : DbContext
     public DbSet<Destination> Destinations => Set<Destination>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<TransportOption> TransportOptions => Set<TransportOption>();
+    public DbSet<Feedback> Feedbacks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,35 +1,15 @@
 ﻿version: '3.9'
 
 services:
-  # Traefik - gateway HTTP public
-  traefik:
-    image: traefik:v2.10
-    command:
-      - --api.insecure=true
-      - --providers.docker=true
-      - --entrypoints.web.address=:80
-    ports:
-      - "80:80"         # HTTP entrypoint
-      - "8080:8080"     # Traefik dashboard
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - app_net
-
   # AuthService - autentificare + JWT
   authservice:
-    build: ./AuthService
     image: authservice:latest
     ports:
-      - "5001:8080"
+      - "5011:8080"
     depends_on:
       - userdataservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.auth.rule=PathPrefix(`/auth`)"
-      - "traefik.http.services.auth.loadbalancer.server.port=8080"
     networks:
       - app_net
 
@@ -42,10 +22,6 @@ services:
       - db-users
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.userdata.rule=PathPrefix(`/user`)"
-      - "traefik.http.services.userdata.loadbalancer.server.port=8080"
     networks:
       - app_net
 
@@ -67,15 +43,12 @@ services:
   tripplannerservice:
     image: tripplannerservice:latest
     ports:
-      - "5003:8080"
+      - "5010:8080"
     depends_on:
       - db-trip
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.trip.rule=PathPrefix(`/trip`)"
-      - "traefik.http.services.trip.loadbalancer.server.port=8080"
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
     networks:
       - app_net
 
@@ -114,14 +87,71 @@ services:
   grafana:
     image: grafana/grafana
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - app_net
 
+  kong-database:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_DB: kong
+      POSTGRES_PASSWORD: kong
+    volumes:
+      - kong_data:/var/lib/postgresql/data
+    networks:
+      - app_net
+
+  kong-migrations:
+    image: kong:3.4
+    depends_on:
+      - kong-database
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_PASSWORD: kong
+    command: kong migrations bootstrap
+    networks:
+      - app_net
+
+  kong:
+    image: kong:3.4
+    depends_on:
+      - kong-migrations
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_PASSWORD: kong
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    networks:
+      - app_net
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: unless-stopped
+    networks:
+      - app_net
 
 networks:
   app_net:
+    driver: bridge
 
 volumes:
   users_pgdata:
   trip_pgdata:
+  kong_data:
+  portainer_data:

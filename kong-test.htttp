@@ -1,0 +1,21 @@
+### Auth - Register
+POST http://localhost:8000/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "secret123"
+}
+
+###
+
+### User - Create
+POST http://localhost:8000/user/create
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com"
+}
+
+###

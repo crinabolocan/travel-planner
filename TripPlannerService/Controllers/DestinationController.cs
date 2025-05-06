@@ -39,4 +39,33 @@ public class DestinationController : ControllerBase
         var destinations = await _context.Destinations.ToListAsync();
         return Ok(destinations);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] DestinationDto dto)
+    {
+        var destination = await _context.Destinations.FindAsync(id);
+        if (destination == null)
+            return NotFound("Destination not found.");
+
+        destination.Name = dto.Name;
+        destination.Country = dto.Country;
+        destination.Description = dto.Description;
+
+        await _context.SaveChangesAsync();
+        return Ok(destination);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var destination = await _context.Destinations.FindAsync(id);
+        if (destination == null)
+            return NotFound("Destination not found.");
+
+        _context.Destinations.Remove(destination);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Destination deleted." });
+    }
+
 }

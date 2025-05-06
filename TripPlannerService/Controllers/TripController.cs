@@ -90,4 +90,26 @@ public class TripController : ControllerBase
         return Ok(new { message = "Trip deleted" });
     }
 
+    [HttpPut("{tripId}/transport")]
+    public async Task<IActionResult> UpdateTransport(int tripId, [FromBody] int newTransportOptionId)
+    {
+        var username = User.Identity?.Name;
+        if (username == null)
+            return Unauthorized();
+
+        var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Id == tripId && t.Username == username);
+        if (trip == null)
+            return NotFound("Trip not found or not yours");
+
+        var transport = await _context.TransportOptions.FindAsync(newTransportOptionId);
+        if (transport == null)
+            return NotFound("Transport option not found");
+
+        trip.TransportOptionId = newTransportOptionId;
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Transport option updated" });
+    }
+
+
 }
