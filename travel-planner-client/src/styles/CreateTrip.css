@@ -79,3 +79,68 @@
     font-weight: bold;
     color: #2e7d32;
 }
+
+.create-trip-container {
+    padding: 2rem;
+    background-color: #e2e1dd;
+    border-radius: 15px;
+    margin: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .create-trip-container h2,
+  .add-destination-section h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e1c1d;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .trip-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .trip-form input,
+  .trip-form select,
+  .trip-form textarea {
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: white;
+  }
+  
+  .trip-form textarea {
+    resize: vertical;
+  }
+  
+  .buton_location {
+    background-color: #533824;
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+  }
+  
+  .buton_location:hover {
+    background-color: #cbae9b;
+  }
+  
+  .trip-message {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: #1e1c1d;
+  }
+  

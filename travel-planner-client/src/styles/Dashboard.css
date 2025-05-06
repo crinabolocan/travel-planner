@@ -17,7 +17,8 @@
     padding: 20px;
     background-color: #f8f8f8;
 }
-.container_agency{
+
+.container_agency {
     position: relative;
     /* margin: 5vh auto; */
     flex-direction: column;
@@ -65,21 +66,21 @@
     text-align: left;
     margin-bottom: 2rem;
     margin-left: 3rem;
-  }
-  
-  .filter-form {
+}
+
+.filter-form {
     display: flex;
     justify-content: left;
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 10px;
-  }
-  
-  .filter-form input {
+}
+
+.filter-form input {
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-  }
+}
 
 .header-title {
     font-size: 5rem;
@@ -121,7 +122,7 @@
     color: #333;
     width: 50%;
     /* display: flex; */
-    }
+}
 
 /* Animații */
 @keyframes fadeIn {
@@ -253,8 +254,7 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    /* animation: fadeIn 1.5s ease-out forwards; */
-
+    gap: 20px;
 }
 
 .trip-step {
@@ -453,11 +453,84 @@
     /* width: 100%; */
     text-align: center;
     padding: 20px;
-
+    margin-bottom: 20px;
 }
 
 .p-carousel .p-carousel-item {
     padding: 10px;
+}
+
+.location-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.location-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.location-card h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1e1c1d;
+    margin-bottom: 0.5rem;
+}
+
+.location-card .description {
+    font-size: 1rem;
+    color: #444;
+    margin-top: 0.5rem;
+}
+
+/* Stiluri pentru săgeți și indicatori */
+.p-carousel-prev,
+.p-carousel-next {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #533824;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.p-carousel-prev:hover,
+.p-carousel-next:hover {
+    background-color: #887878;
+}
+
+.p-carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.p-carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    margin: 0 4px;
+    border-radius: 50%;
+    border: none;
+    background-color: #887878;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.p-carousel-indicators .p-highlight button {
+    background-color: #533824;
+    width: 24px;
+    height: 6px;
+    border-radius: 10px;
 }
 
 .location-card {
@@ -574,9 +647,9 @@
     height: auto;
     width: auto;
     object-fit: contain;
-  }
+}
 
-  .popup.open {
+.popup.open {
     position: fixed;
     top: 0;
     left: 0;
@@ -589,9 +662,9 @@
     z-index: 999;
     padding: 20px;
     overflow-y: auto;
-  }
-  
-  .popup-content {
+}
+
+.popup-content {
     background: #fff;
     padding: 30px;
     border-radius: 5px;
@@ -602,38 +675,47 @@
     position: relative;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     animation: fadeInPopup 0.4s ease;
-  }
-  
-  @keyframes fadeInPopup {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .popup-content img.excursion-thumbnail-popup {
+}
+
+@keyframes fadeInPopup {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.popup-content img.excursion-thumbnail-popup {
     width: 100%;
     height: 250px;
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 20px;
-  }
-  
-  .popup-content h3 {
+}
+
+.popup-content h3 {
     font-size: 28px;
     margin-bottom: 15px;
-    color: #000000; /* albastru închis */
-  }
-  
-  .popup-content p {
+    color: #000000;
+    /* albastru închis */
+}
+
+.popup-content p {
     font-size: 16px;
     margin-bottom: 10px;
     line-height: 1.5;
-  }
-  
-  .popup-content p strong {
-    color: #533824; /* albastru plăcut */
-  }
-  
-  .close-popup {
+}
+
+.popup-content p strong {
+    color: #533824;
+    /* albastru plăcut */
+}
+
+.close-popup {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -645,13 +727,13 @@
     border-radius: 50%;
     cursor: pointer;
     transition: background 0.3s;
-  }
-  
-  .close-popup:hover {
+}
+
+.close-popup:hover {
     background: #ccc;
-  }
-  
-  .popup-content::-webkit-scrollbar {
+}
+
+.popup-content::-webkit-scrollbar {
     width: 8px;
 }
 
@@ -675,10 +757,9 @@
     cursor: pointer;
     transition: transform 0.3s ease, color 0.3s ease;
     margin-top: 20px;
-  }
-  
-  .heart-button:hover {
+}
+
+.heart-button:hover {
     transform: scale(1.2);
     color: #cbae9b;
-  }
-  
+}

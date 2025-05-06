@@ -12,7 +12,8 @@ const CreateTrip = () => {
         destinationId: "",
         transportOptionId: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        activities: []
     });
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
@@ -21,6 +22,35 @@ const CreateTrip = () => {
         country: "",
         description: ""
     });
+    const [newTransport, setNewTransport] = useState({
+        type: "",
+        company: "",
+        price: ""
+    });
+
+
+    const handleNewTransportChange = (e) => {
+        setNewTransport({ ...newTransport, [e.target.name]: e.target.value });
+    };
+
+    const handleAddTransport = async (e) => {
+        e.preventDefault();
+        try {
+            await tripApi.post("/transport-option", {
+                ...newTransport,
+                price: parseFloat(newTransport.price),
+            });
+            setMessage("Transportul a fost adăugat cu succes!");
+            setNewTransport({ type: "", company: "", price: "" });
+
+            // Reîncarcă lista
+            const res = await tripApi.get("/transport-option");
+            setTransportOptions(res.data);
+        } catch (err) {
+            console.error("Eroare la adăugarea transportului:", err);
+            setMessage("Eroare la adăugare transport.");
+        }
+    };
 
     const handleNewDestinationChange = (e) => {
         setNewDestination({ ...newDestination, [e.target.name]: e.target.value });
@@ -41,7 +71,20 @@ const CreateTrip = () => {
             setMessage("Eroare la adăugare.");
         }
     };
+    const [activityInput, setActivityInput] = useState("");
 
+    const handleAddActivity = () => {
+        if (activityInput.trim()) {
+            setForm({ ...form, activities: [...form.activities, activityInput.trim()] });
+            setActivityInput("");
+        }
+    };
+
+    const handleRemoveActivity = (index) => {
+        const updated = [...form.activities];
+        updated.splice(index, 1);
+        setForm({ ...form, activities: updated });
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,14 +119,14 @@ const CreateTrip = () => {
     };
 
     return (
-
         <div className="dashboard-page">
             <div className="menu">
                 <MenuDashboard />
             </div>
-            <div className="create-trip-page">
+            <div className="create-trip-container">
                 <h2>Adaugă o nouă călătorie</h2>
-                <form onSubmit={handleSubmit} className="create-trip-form">
+
+                <form className="trip-form" onSubmit={handleSubmit}>
                     <label>Destinație:</label>
                     <select name="destinationId" value={form.destinationId} onChange={handleChange} required>
                         <option value="">Selectează</option>
@@ -99,7 +142,7 @@ const CreateTrip = () => {
                         <option value="">Selectează</option>
                         {transportOptions.map((t) => (
                             <option key={t.id} value={t.id}>
-                                {t.type} - {t.company} ({t.price} €)
+                                {t.type} - {t.company} ({t.price} RON)
                             </option>
                         ))}
                     </select>
@@ -109,14 +152,38 @@ const CreateTrip = () => {
 
                     <label>Data sfârșit:</label>
                     <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
+                    <div className="activities-section">
+                        <label>Activități:</label>
+                        <div className="activity-input-group">
+                            <input
+                                type="text"
+                                value={activityInput}
+                                onChange={(e) => setActivityInput(e.target.value)}
+                                placeholder="Ex: Vizită muzeu, hiking, etc."
+                            />
+                            <button type="button" onClick={handleAddActivity} className="buton_location">
+                                Adaugă
+                            </button>
+                        </div>
+                        <ul className="activity-list">
+                            {form.activities.map((act, index) => (
+                                <li key={index}>
+                                    {act}{" "}
+                                    <button type="button" onClick={() => handleRemoveActivity(index)} className="remove-btn">
+                                        ✕
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
-                    <button type="submit">Creează călătoria</button>
+
+                    <button type="submit" className="buton_location">Creează călătoria</button>
                 </form>
 
-                {/* Formularul de adăugare a destinației este acum separat */}
-                <div className="new-destination-section">
+                <div className="add-destination-section">
                     <h3>Adaugă o destinație nouă</h3>
-                    <form onSubmit={handleAddDestination} className="add-destination-form">
+                    <form onSubmit={handleAddDestination} className="trip-form">
                         <label>Nume:</label>
                         <input
                             type="text"
@@ -125,7 +192,6 @@ const CreateTrip = () => {
                             onChange={handleNewDestinationChange}
                             required
                         />
-
                         <label>Țară:</label>
                         <input
                             type="text"
@@ -134,7 +200,6 @@ const CreateTrip = () => {
                             onChange={handleNewDestinationChange}
                             required
                         />
-
                         <label>Descriere:</label>
                         <textarea
                             name="description"
@@ -142,15 +207,44 @@ const CreateTrip = () => {
                             onChange={handleNewDestinationChange}
                             required
                         ></textarea>
+                        <button type="submit" className="buton_location">Adaugă destinația</button>
+                    </form>
+                </div>
 
-                        <button type="submit">Adaugă destinația</button>
+                <div className="add-destination-section">
+                    <h3>Adaugă o opțiune de transport</h3>
+                    <form onSubmit={handleAddTransport} className="trip-form">
+                        <label>Tip:</label>
+                        <input
+                            type="text"
+                            name="type"
+                            value={newTransport.type}
+                            onChange={handleNewTransportChange}
+                            required
+                        />
+                        <label>Companie:</label>
+                        <input
+                            type="text"
+                            name="company"
+                            value={newTransport.company}
+                            onChange={handleNewTransportChange}
+                            required
+                        />
+                        <label>Preț (RON):</label>
+                        <input
+                            type="number"
+                            name="price"
+                            value={newTransport.price}
+                            onChange={handleNewTransportChange}
+                            required
+                        />
+                        <button type="submit" className="buton_location">Adaugă transport</button>
                     </form>
                 </div>
 
 
                 {message && <p className="trip-message">{message}</p>}
             </div>
-
         </div>
     );
 };

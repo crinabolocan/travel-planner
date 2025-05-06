@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from "react-router-dom";
+import { Carousel } from 'primereact/carousel';
 import destinationApi from "../api/destinationApi";
 import "../styles/Dashboard.css";
 
@@ -12,6 +13,27 @@ const Dashboard = () => {
   const decoded = token ? jwtDecode(token) : null;
   const username = decoded?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] || "";
   const [destinations, setDestinations] = useState([]);
+
+  const responsiveOptions = [
+    {
+      breakpoint: '1024px',
+      numVisible: 2,
+      numScroll: 1
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 1,
+      numScroll: 1
+    }
+  ];
+
+  const destinationTemplate = (dest) => (
+    <div className="location-card" data-aos="zoom-in">
+      <h4>{dest.name}</h4>
+      <p>{dest.country}</p>
+      <p className="description">{dest.description}</p>
+    </div>
+  );
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -67,15 +89,15 @@ const Dashboard = () => {
 
         <section className="carousel-container">
           <h2 className="carousel-title">Destinații disponibile</h2>
-          <div className="destination-grid">
-            {destinations.map((dest) => (
-              <div key={dest.id} className="location-card" data-aos="zoom-in">
-                <h4>{dest.name}</h4>
-                <p>{dest.country}</p>
-                <p className="description">{dest.description}</p>
-              </div>
-            ))}
-          </div>
+          <Carousel
+            value={destinations}
+            numScroll={1}
+            numVisible={3}
+            responsiveOptions={responsiveOptions}
+            itemTemplate={destinationTemplate}
+            circular
+            autoplayInterval={7000}
+          />
         </section>
       </div>
     </div>
