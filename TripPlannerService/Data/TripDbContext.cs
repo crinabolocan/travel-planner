@@ -33,14 +33,12 @@ public class TripDbContext : DbContext
             .HasConversion(converter)
             .Metadata.SetValueComparer(comparer);
 
-        // Relatie Trip -> Destination
         modelBuilder.Entity<Trip>()
             .HasOne(t => t.Destination)
             .WithMany(d => d.Trips)
             .HasForeignKey(t => t.DestinationId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Relatie Trip -> Review
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Trip)
             .WithMany(t => t.Reviews)

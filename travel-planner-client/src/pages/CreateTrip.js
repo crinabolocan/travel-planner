@@ -3,6 +3,7 @@ import tripApi from "../api/tripPlannerApi";
 import destinationApi from "../api/destinationApi";
 import "../styles/CreateTrip.css";
 import MenuDashboard from "./Menu";
+import Toast from "./Toast";
 import { useNavigate } from "react-router-dom";
 
 const CreateTrip = () => {
@@ -27,7 +28,7 @@ const CreateTrip = () => {
         company: "",
         price: ""
     });
-
+    const [toast, setToast] = useState(null);
 
     const handleNewTransportChange = (e) => {
         setNewTransport({ ...newTransport, [e.target.name]: e.target.value });
@@ -40,7 +41,8 @@ const CreateTrip = () => {
                 ...newTransport,
                 price: parseFloat(newTransport.price),
             });
-            setMessage("Transportul a fost adăugat cu succes!");
+            // Afișează mesaj de succes cu toast
+            setToast({ message: "Transportul a fost adăugat cu succes!", type: "success" });
             setNewTransport({ type: "", company: "", price: "" });
 
             // Reîncarcă lista
@@ -48,7 +50,8 @@ const CreateTrip = () => {
             setTransportOptions(res.data);
         } catch (err) {
             console.error("Eroare la adăugarea transportului:", err);
-            setMessage("Eroare la adăugare transport.");
+            // cu toast
+            setToast({ message: "Eroare la adăugare transport.", type: "error" });
         }
     };
 
@@ -60,7 +63,8 @@ const CreateTrip = () => {
         e.preventDefault();
         try {
             await destinationApi.post("/destination", newDestination);
-            setMessage("Destinația a fost adăugată cu succes!");
+            // Afișează mesaj de succes cu toast
+            setToast({ message: "Destinația a fost adăugată cu succes!", type: "success" });
 
             // Golește formularul și reîncarcă lista
             setNewDestination({ name: "", country: "", description: "" });
@@ -68,7 +72,8 @@ const CreateTrip = () => {
             setDestinations(res.data);
         } catch (err) {
             console.error("Eroare la adăugarea destinației:", err);
-            setMessage("Eroare la adăugare.");
+            // cu toast
+            setToast({ message: "Eroare la adăugare destinație.", type: "error" });
         }
     };
     const [activityInput, setActivityInput] = useState("");
@@ -108,15 +113,36 @@ const CreateTrip = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const start = new Date(form.startDate);
+        const end = new Date(form.endDate);
+
+        if (start >= end) {
+            setToast({ message: "Data de sfârșit trebuie să fie după data de început.", type: "error" });
+            return;
+        }
+
         try {
             await tripApi.post("/trip/create", form);
-            setMessage("Călătoria a fost creată cu succes!");
+            setToast({ message: "Călătoria a fost creată cu succes!", type: "success" });
             setTimeout(() => navigate("/my-trips"), 1000);
         } catch (err) {
             console.error("Eroare la crearea călătoriei:", err);
-            setMessage("A apărut o eroare.");
+
+            if (err.response?.data?.errors) {
+                const errorObj = err.response.data.errors;
+
+                const allMessages = Object.values(errorObj)
+                    .flat()
+                    .map((msg, index) => <li key={index}>{msg}</li>);
+
+                setMessage(<ul className="error-list">{allMessages}</ul>);
+            } else {
+                setMessage("A apărut o eroare.");
+            }
         }
     };
+
 
     return (
         <div className="dashboard-page">
@@ -243,7 +269,14 @@ const CreateTrip = () => {
                 </div>
 
 
-                {message && <p className="trip-message">{message}</p>}
+                {message && <div className="trip-message">{message}</div>}
+                {toast && (
+                    <Toast
+                        message={toast.message}
+                        type={toast.type}
+                        onClose={() => setToast(null)}
+                    />
+                )}
             </div>
         </div>
     );

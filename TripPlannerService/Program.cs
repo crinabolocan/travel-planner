@@ -5,8 +5,17 @@ using Prometheus;
 using System.Text;
 using TripPlannerService.Data;
 using TripPlannerService.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using TripPlannerService.DTOs;
+using TripPlannerService.Validators;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TripDtoValidator>());
 
 // CORS: permite cereri de pe frontend (inclusiv cu Authorization)
 builder.Services.AddCors(options =>
@@ -19,7 +28,6 @@ builder.Services.AddCors(options =>
               .AllowCredentials();
     });
 });
-
 
 // Controllers + JSON loop protection
 builder.Services.AddControllers()
@@ -98,5 +106,4 @@ app.UseHttpMetrics();
 app.MapControllers();
 DbInitializer.ApplyMigration(app);
 
-// Rulează pe portul 5010
 app.Run("http://0.0.0.0:8080");

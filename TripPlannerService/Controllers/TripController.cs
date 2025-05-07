@@ -25,15 +25,6 @@ public class TripController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateTrip([FromBody] TripDto tripDto)
     {
-        if (tripDto.StartDate >= tripDto.EndDate)
-            return BadRequest("StartDate must be earlier than EndDate");
-
-        if (tripDto.DestinationId <= 0)
-            return BadRequest("DestinationId is required");
-
-        if (tripDto.TransportOptionId <= 0)
-            return BadRequest("Transport option is required");
-        // fluent validator
         var username = User.Identity?.Name;
         if (username == null)
             return Unauthorized();
@@ -54,6 +45,7 @@ public class TripController : ControllerBase
 
         return Ok(new { message = "Trip created" });
     }
+
 
     [HttpGet("my-trips")]
     public async Task<IActionResult> GetTrips()

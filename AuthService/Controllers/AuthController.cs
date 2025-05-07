@@ -25,7 +25,6 @@ public class AuthController : ControllerBase
     {
         var httpClient = new HttpClient();
 
-        // Decide adresa corectă în funcție de mediu
         var baseUrl = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"
             ? "http://userdataservice:8080"
             : "http://localhost:5002";
@@ -52,7 +51,6 @@ public class AuthController : ControllerBase
     {
         var httpClient = new HttpClient();
 
-        // Decide adresa corectă în funcție de mediu
         var baseUrl = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"
             ? "http://userdataservice:8080"
             : "http://localhost:5002";

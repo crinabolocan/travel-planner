@@ -143,4 +143,13 @@
     font-weight: 600;
     color: #1e1c1d;
   }
-  
+
+  .error-list {
+    color: #b91c1c;
+    background-color: #fee2e2;
+    padding: 10px 15px;
+    border-radius: 6px;
+    list-style-type: disc;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
