@@ -12,6 +12,7 @@ const FeedbackPage = () => {
     });
 
     const [response, setResponse] = useState("");
+    const [feedbackList, setFeedbackList] = useState([]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -22,6 +23,7 @@ const FeedbackPage = () => {
         e.preventDefault();
         try {
             await tripApi.post("/feedback", form);
+            setFeedbackList([...feedbackList, form]);
             setResponse("Feedback trimis cu succes!");
             setForm({ category: "", rating: "", agree: false, message: "" });
         } catch (err) {
@@ -82,6 +84,20 @@ const FeedbackPage = () => {
               <button type="submit" className="buton_location">Trimite</button>
               {response && <p className="feedback-response">{response}</p>}
             </form>
+            {feedbackList.length > 0 && (
+              <div className="feedback-list">
+                <h3>Feedback trimis:</h3>
+                <ul>
+                  {feedbackList.map((item, index) => (
+                    <li key={index}>
+                      <strong>Categorie:</strong> {item.category} |
+                      <strong> Rating:</strong> {item.rating} ⭐ |
+                      <strong> Mesaj:</strong> {item.message}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       );

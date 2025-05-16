@@ -1,117 +1,133 @@
 .feedback-page {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #f9f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f9f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
 }
 
 .feedback-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .feedback-form select,
 .feedback-form textarea {
-    padding: 0.6rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 .radio-group {
-    display: flex;
-    gap: 0.8rem;
+  display: flex;
+  gap: 0.8rem;
 }
 
 .feedback-form button {
-    background-color: #0c4a60;
-    color: white;
-    padding: 0.7rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  background-color: #0c4a60;
+  color: white;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .feedback-response {
-    margin-top: 1rem;
-    font-weight: bold;
-    color: #2e7d32;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #2e7d32;
 }
 
 .feedback-container {
-    padding: 2rem;
-    background-color: #e2e1dd;
-    border-radius: 12px;
-    margin: 2rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .feedback-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #1e1c1d;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  .feedback-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .feedback-form select,
-  .feedback-form textarea,
-  .feedback-form input[type="text"] {
-    padding: 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    background: #fff;
-  }
-  
-  .radio-group {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .radio-group label {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  
-  .checkbox-group {
-    margin-top: 1rem;
-  }
-  
-  .buton_location {
-    background-color: #533824;
-    color: #fff;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: fit-content;
-  }
-  
-  .buton_location:hover {
-    background-color: #cbae9b;
-  }
-  
-  .feedback-response {
-    margin-top: 1rem;
-    font-weight: 600;
-    color: #1e1c1d;
-  }
-  
+  padding: 2rem;
+  background-color: #e2e1dd;
+  border-radius: 12px;
+  margin: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feedback-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e1c1d;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.feedback-form select,
+.feedback-form textarea,
+.feedback-form input[type="text"] {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.radio-group label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.checkbox-group {
+  margin-top: 1rem;
+}
+
+.buton_location {
+  background-color: #533824;
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: fit-content;
+}
+
+.buton_location:hover {
+  background-color: #cbae9b;
+}
+
+.feedback-response {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #1e1c1d;
+}
+
+.feedback-list {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f0f8ff;
+  border-radius: 8px;
+}
+
+.feedback-list ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.feedback-list li {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
