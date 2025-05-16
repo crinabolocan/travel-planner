@@ -84,23 +84,9 @@ const FeedbackPage = () => {
               <button type="submit" className="buton_location">Trimite</button>
               {response && <p className="feedback-response">{response}</p>}
             </form>
-            {feedbackList.length > 0 && (
-              <div className="feedback-list">
-                <h3>Feedback trimis:</h3>
-                <ul>
-                  {feedbackList.map((item, index) => (
-                    <li key={index}>
-                      <strong>Categorie:</strong> {item.category} |
-                      <strong> Rating:</strong> {item.rating} ⭐ |
-                      <strong> Mesaj:</strong> {item.message}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
-      );
-    };
-    
-    export default FeedbackPage;
+    );
+};
+
+export default FeedbackPage;
